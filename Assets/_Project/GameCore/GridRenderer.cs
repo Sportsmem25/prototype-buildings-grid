@@ -3,11 +3,11 @@ using UnityEngine;
 [RequireComponent(typeof(LineRenderer))]
 public class GridRenderer : MonoBehaviour
 {
-    public GridManager gridManager;
-    public Color gridColor = new Color(0.8f, 0.8f, 0.8f);
-    public float lineWidth = 0.02f;
-    public Material lineMaterial;
+    [SerializeField] private Material lineMaterial;
 
+    private GridManager gridManager;
+    private Color gridColor = new Color(0.8f, 0.8f, 0.8f);
+    private float lineWidth = 0.02f;
     private GameObject parentLines;
 
     void Start()
@@ -21,24 +21,24 @@ public class GridRenderer : MonoBehaviour
     /// </summary>
     public void DrawGrid()
     {
-        if (gridManager == null || gridManager.unityGrid == null) return;
+        if (gridManager == null || gridManager.UnityGrid == null) return;
 
         if (parentLines != null) DestroyImmediate(parentLines);
         parentLines = new GameObject("GridLines");
         parentLines.transform.SetParent(transform, false);
-        var mat = lineMaterial ?? new Material(Shader.Find("Sprites/Default"));
+        Material mat = lineMaterial ?? new Material(Shader.Find("Sprites/Default"));
         mat.color = gridColor;
-        int cols = gridManager.columns;
-        int rows = gridManager.rows;
-        var g = gridManager.unityGrid;
+        int cols = gridManager.Columns;
+        int rows = gridManager.Rows;
+        var g = gridManager.UnityGrid;
         Vector3 cellSize = g.cellSize;
 
         // вертикальные линии
         for (int x = 0; x <= cols; x++)
         {
-            var go = new GameObject("GridLine_V_" + x);
+            GameObject go = new GameObject("GridLine_V_" + x);
             go.transform.SetParent(parentLines.transform, false);
-            var lr = go.AddComponent<LineRenderer>();
+            LineRenderer lr = go.AddComponent<LineRenderer>();
             lr.material = mat;
             lr.startWidth = lineWidth;
             lr.endWidth = lineWidth;
@@ -60,9 +60,9 @@ public class GridRenderer : MonoBehaviour
         // горизонтальные линии
         for (int y = 0; y <= rows; y++)
         {
-            var go = new GameObject("GridLine_H_" + y);
+            GameObject go = new GameObject("GridLine_H_" + y);
             go.transform.SetParent(parentLines.transform, false);
-            var lr = go.AddComponent<LineRenderer>();
+            LineRenderer lr = go.AddComponent<LineRenderer>();
             lr.material = mat;
             lr.startWidth = lineWidth;
             lr.endWidth = lineWidth;

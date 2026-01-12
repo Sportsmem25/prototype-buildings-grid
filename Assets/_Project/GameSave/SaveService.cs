@@ -122,8 +122,8 @@ public class SaveService : MonoBehaviour
             }
 
             // Создание зданий на сетке
-            var configLoader = FindObjectOfType<ConfigLoader>();
-            var grid = FindObjectOfType<GridManager>();
+            ConfigLoader configLoader = FindObjectOfType<ConfigLoader>();
+            GridManager grid = FindObjectOfType<GridManager>();
 
             foreach (var sb in saveData.buildingsWithNames)
             {
@@ -132,10 +132,10 @@ public class SaveService : MonoBehaviour
                 grid.SetOccupied(sb.x, sb.y, sb.w, sb.h, true);
 
                 // Создание объекта в сцене с именем instanceName
-                var go = new GameObject(sb.instanceName);
-                var bi = go.AddComponent<BuildingInstance>();
-                bi.id = sb.id; bi.gridX = sb.x; bi.gridY = sb.y; bi.width = sb.w; bi.height = sb.h;
-                var sr = go.AddComponent<SpriteRenderer>();
+                GameObject go = new GameObject(sb.instanceName);
+                BuildingInstance buildingInstance = go.AddComponent<BuildingInstance>();
+                buildingInstance.id = sb.id; buildingInstance.gridX = sb.x; buildingInstance.gridY = sb.y; buildingInstance.width = sb.w; buildingInstance.height = sb.h;
+                SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
                 sr.sprite = Resources.Load<Sprite>(cfg.spritePath);
                 go.transform.position = grid.CellToWorld(sb.x, sb.y);
             }

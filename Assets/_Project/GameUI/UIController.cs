@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
-    public GameObject buildingsPanel;
-    public PlacementController placementController;
-    public BuildingConfig[] buildingConfigs;
-    public DeleteController deleteController;
-
+    [SerializeField] private GameObject buildingsPanel;
+    [SerializeField] private BuildingConfig[] buildingConfigs;
+    private PlacementController placementController;
+    private DeleteController deleteController;
     private bool deleteMode = false;
 
     void Start()
     {
         buildingsPanel.SetActive(false);
         placementController = FindObjectOfType<PlacementController>();
+        deleteController = FindObjectOfType<DeleteController>();
     }
 
     /// <summary>

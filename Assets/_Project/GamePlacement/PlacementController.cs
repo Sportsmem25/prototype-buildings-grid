@@ -3,11 +3,10 @@ using UnityEngine;
 
 public class PlacementController : MonoBehaviour
 {
-    public GridManager grid;
-    public SaveService save;
-    public Transform buildingRoot;
-    public Camera targetCamera;
-
+    [SerializeField] private GridManager grid;
+    [SerializeField] private SaveService save;
+    private Transform buildingRoot;
+    private Camera targetCamera;
     private BuildingConfig activeConfig;
     private GameObject preview;
     private SpriteRenderer previewRenderer;
@@ -16,8 +15,6 @@ public class PlacementController : MonoBehaviour
 
     void Start()
     {
-        if (grid == null) grid = FindObjectOfType<GridManager>();
-        if (save == null) save = FindObjectOfType<SaveService>();
         if (targetCamera == null) targetCamera = Camera.main;
     }
 
@@ -91,21 +88,21 @@ public class PlacementController : MonoBehaviour
             return;
         }
 
-        var go = new GameObject(activeConfig.id + "_" + Guid.NewGuid());
+        GameObject go = new GameObject(activeConfig.id + "_" + Guid.NewGuid());
         go.transform.position = grid.CellToWorld(cell.x, cell.y);
         if (buildingRoot != null) go.transform.parent = buildingRoot;
-        var sr = go.AddComponent<SpriteRenderer>();
+        SpriteRenderer sr = go.AddComponent<SpriteRenderer>();
         sr.sprite = Resources.Load<Sprite>(activeConfig.spritePath);
         sr.color = Color.white;
-        var bi = go.AddComponent<BuildingInstance>();
-        bi.id = activeConfig.id;
-        bi.gridX = cell.x;
-        bi.gridY = cell.y;
-        bi.width = activeConfig.width;
-        bi.height = activeConfig.height;
+        BuildingInstance buildingInstance = go.AddComponent<BuildingInstance>();
+        buildingInstance.id = activeConfig.id;
+        buildingInstance.gridX = cell.x;
+        buildingInstance.gridY = cell.y;
+        buildingInstance.width = activeConfig.width;
+        buildingInstance.height = activeConfig.height;
 
         grid.SetOccupied(cell.x, cell.y, activeConfig.width, activeConfig.height, true);
-        save.RegisterBuildingInstance(bi, go.name);
+        save.RegisterBuildingInstance(buildingInstance, go.name);
 
         Destroy(preview);
         preview = null;

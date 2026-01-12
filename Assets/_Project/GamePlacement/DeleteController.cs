@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class DeleteController : MonoBehaviour
 {
+    [SerializeField] private GameObject deleteOverlay;
     private GridManager grid;
     private SaveService saveService;
-    public GameObject deleteOverlay;
     private bool isActive = false;
 
     private void Awake()
@@ -23,8 +23,8 @@ public class DeleteController : MonoBehaviour
     {
         if(!isActive) return;
 
-        var mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        var cell = grid.WorldToCell(mouse);
+        Vector3 mouse = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector2Int cell = grid.WorldToCell(mouse);
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -32,11 +32,11 @@ public class DeleteController : MonoBehaviour
             var found = saveService.FindBuildingAt(cell.x, cell.y);
             if (found != null)
             {
-                // очистка сетку
+                // очистка сетки
                 grid.SetOccupied(found.x, found.y, found.w, found.h, false);
 
-                // удаление объект в сцене (по имени/координатам)
-                var go = GameObject.Find(found.instanceName);
+                // удаление объекта в сцене (по имени/координатам)
+                GameObject go = GameObject.Find(found.instanceName);
                 if (go != null) Destroy(go);
 
                 // удаление из сохранения

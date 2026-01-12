@@ -3,11 +3,14 @@ using UnityEngine;
 public class GridManager : MonoBehaviour
 {
     [Header("Grid settings")]
-    public Grid unityGrid;
-    public int columns = 40;
-    public int rows = 30;
-
+    private Grid unityGrid;
+    private int columns = 40;
+    private int rows = 30;
     private bool[,] occupied;
+
+    public Grid UnityGrid => unityGrid;
+    public int Columns => columns;
+    public int Rows => rows;
 
     private void Awake()
     {
@@ -26,7 +29,7 @@ public class GridManager : MonoBehaviour
     public Vector3 CellToWorld(int x, int y)
     {
         Vector3Int cell = new Vector3Int(x, y, 0);
-        Vector3 worldOrigin = unityGrid.CellToWorld(cell); // возвращает origin €чейки (обычно нижний левый угол)
+        Vector3 worldOrigin = unityGrid.CellToWorld(cell);  // возвращает origin €чейки (обычно нижний левый угол)
         Vector3 half = new Vector3(unityGrid.cellSize.x, unityGrid.cellSize.y, unityGrid.cellSize.z) * 0.5f;
         return worldOrigin + half;
     }
